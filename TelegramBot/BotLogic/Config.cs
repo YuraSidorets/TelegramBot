@@ -7,8 +7,8 @@ namespace TelegramBot.BotLogic
     {
         private static readonly NameValueCollection Appsettings = ConfigurationManager.AppSettings;
 
-        public static string BotApiKey => Appsettings["BotApiKey"];
+        public static string BotApiKey => Appsettings["170904116:AAHpil07V0xDdkrNCrNIySx8CEajntS2_lk"];
 
-        public static string WebHookUrl => Appsettings["WebHookUrl"];
+        public static string WebHookUrl => Appsettings[$"http://stoned-jesusbot.azurewebsites.net/"];
     }
 }
