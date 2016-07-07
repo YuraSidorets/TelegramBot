@@ -1,8 +1,10 @@
-﻿using Telegram.Bot;
+﻿using System.Threading.Tasks;
+using Telegram.Bot;
 using Telegram.Bot.Args;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
+using TelegramBot.Utils;
 
 namespace TelegramBot.BotLogic
 {
@@ -45,8 +47,27 @@ namespace TelegramBot.BotLogic
 /Habr - Latest news from Habrahabr ^^
 /Recode - Latest news from Recode
 /Flickr - Random photo from Flickr Explore
+/Lounge - Nearest places to lounge
 /Vkreply - ???
 ",
+                        replyMarkup: new ForceReply());
+            }
+            else if (message.Text.StartsWith("/ITC"))
+            {
+
+                await _bot.SendChatActionAsync(message.Chat.Id, ChatAction.Typing);
+                await
+                    _bot.SendTextMessageAsync(message.Chat.Id, ITC.GetNews(),
+                        replyMarkup: new ForceReply());
+
+            }
+            else
+            {
+                await _bot.SendChatActionAsync(message.Chat.Id, ChatAction.Typing);
+
+                await
+                    _bot.SendTextMessageAsync(message.Chat.Id,
+                        "Command don't recognized, see /help",
                         replyMarkup: new ForceReply());
             }
         }

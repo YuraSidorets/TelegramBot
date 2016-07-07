@@ -7,6 +7,6 @@ namespace TelegramBot.BotLogic
     {
         public static string BotApiKey => "250719418:AAEmTZ1OSFGOD38UaMhHfQvy47_6MYhYcds";
 
-        public static string WebHookUrl => "https://stonedjesusbot.azurewebsites.net:8443/api/webhook";
+        public static string WebHookUrl => "https://api.telegram.org/bot250719418:AAEmTZ1OSFGOD38UaMhHfQvy47_6MYhYcds/setWebhook?url=https://stonedjesusbot.azurewebsites.net/api/webhook";
     }
 }
