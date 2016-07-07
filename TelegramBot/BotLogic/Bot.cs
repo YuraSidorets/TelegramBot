@@ -1,4 +1,9 @@
-﻿using Telegram.Bot;
+﻿using System;
+using System.IO;
+using System.IO.Pipes;
+using System.Linq;
+using Telegram.Bot;
+using Telegram.Bot.Types;
 
 namespace TelegramBot.BotLogic
 {
@@ -10,7 +15,7 @@ namespace TelegramBot.BotLogic
         {
             if (_bot != null) return _bot;
             _bot = new TelegramBotClient(Config.BotApiKey);
-            _bot.SetWebhookAsync(Config.WebHookUrl);
+            _bot.SetWebhookAsync(Config.WebHookUrl).Wait();
             return _bot;
         }
     }

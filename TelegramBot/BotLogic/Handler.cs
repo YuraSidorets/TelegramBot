@@ -17,12 +17,11 @@ namespace TelegramBot.BotLogic
 
         public void Handle(Message message)
         {
-            _bot.OnMessage += BotOnMessageReceived;
+             BotOnMessageReceived(message);
         }
 
-        private async void BotOnMessageReceived(object sender, MessageEventArgs messageEventArgs)
+        private async void BotOnMessageReceived(Message message)
         {
-            var message = messageEventArgs.Message;
 
             if (message == null || message.Type != MessageType.TextMessage) return;
 
@@ -42,10 +41,10 @@ namespace TelegramBot.BotLogic
                 await
                     _bot.SendTextMessageAsync(message.Chat.Id,
                         @"Usage:
-/ITC - Latest news from ITC.UA
+/ITC - Latest news from ITC UA
 /Habr - Latest news from Habrahabr ^^
 /Recode - Latest news from Recode
-/Flickr - Random photo from Flickr//Explore
+/Flickr - Random photo from Flickr Explore
 /Vkreply - ???
 ",
                         replyMarkup: new ForceReply());

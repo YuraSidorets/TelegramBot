@@ -6,8 +6,9 @@ using TelegramBot.BotLogic;
 
 namespace TelegramBot.Controllers
 {
-    public class BotController : ApiController
+    public class WebHookController : ApiController
     {
+        [HttpPost]
         public OkResult Post(Update update)
         {
             Task.Run(() => new Handler().Handle(update.Message));
