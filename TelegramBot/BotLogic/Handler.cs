@@ -17,24 +17,28 @@ namespace TelegramBot.BotLogic
             _bot = Bot.Get();
         }
 
-        public void Handle(Message message)
+        public async void Handle(Message message)
         {
-             BotOnMessageReceived(message);
-        }
-
-        private async void BotOnMessageReceived(Message message)
-        {
-
             if (message == null || message.Type != MessageType.TextMessage) return;
 
             if (message.Text.StartsWith("/start"))
             {
                 await _bot.SendChatActionAsync(message.Chat.Id, ChatAction.Typing);
-
+               
                 await
                     _bot.SendTextMessageAsync(message.Chat.Id,
                         "Hello, I'm Stoned Jesus Bot! :3 What you wanna from me?! See /help",
                         replyMarkup: new ForceReply());
+            }
+
+            else if (message.Text.StartsWith("/ITC"))
+            {
+
+                await _bot.SendChatActionAsync(message.Chat.Id, ChatAction.Typing);
+
+                await _bot.SendTextMessageAsync(message.Chat.Id, ITC.GetNews(),
+                    replyMarkup: new ForceReply(),disableWebPagePreview:true);
+
             }
             else if (message.Text.StartsWith("/help"))
             {
@@ -48,18 +52,8 @@ namespace TelegramBot.BotLogic
 /Recode - Latest news from Recode
 /Flickr - Random photo from Flickr Explore
 /Lounge - Nearest places to lounge
-/Vkreply - ???
 ",
                         replyMarkup: new ForceReply());
-            }
-            else if (message.Text.StartsWith("/ITC"))
-            {
-
-                await _bot.SendChatActionAsync(message.Chat.Id, ChatAction.Typing);
-                await
-                    _bot.SendTextMessageAsync(message.Chat.Id, ITC.GetNews(),
-                        replyMarkup: new ForceReply());
-
             }
             else
             {
@@ -71,5 +65,6 @@ namespace TelegramBot.BotLogic
                         replyMarkup: new ForceReply());
             }
         }
+
     }
 }

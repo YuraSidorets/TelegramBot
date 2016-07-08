@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
@@ -7,23 +9,23 @@ namespace TelegramBot.Utils
 {
     public static class ITC
     {
+        public static string Url = "http://itc.ua/";
         /// <summary>
         /// Get Daily news from ITC
         /// </summary>
         /// <returns>Array of strings with articles headers</returns>
         public static string GetNews()
         {
-            string url = "http://itc.ua";
-
             StringBuilder builder = new StringBuilder();
 
-            var headers = ParseItcHtml(DataGrabber.GrabHtml(url));
+            var headers = ParseItcHtml(DataCache.GetCachedData(Url));
+
             foreach (var header in headers)
             {
                 builder.AppendFormat($"{header}\n\n");
             }
 
-            return (builder.ToString());
+            return builder+Url;
         }
 
 
@@ -32,6 +34,8 @@ namespace TelegramBot.Utils
             List<string> contentStrings = new List<string>();
 
             var aTags = document?.DocumentNode.SelectNodes("//a");
+
+
             if (aTags != null)
             {
                 foreach (var tag in aTags)

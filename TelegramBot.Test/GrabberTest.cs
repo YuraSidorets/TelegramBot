@@ -1,17 +1,31 @@
 ﻿using System;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TelegramBot.Utils;
 
 namespace TelegramBot.Test
 {
     [TestClass]
-    public class GrabberTest
+    public class UtilsTest
     {
         [TestMethod]
-        public void ParseHtmlTest()
+        public void ITCTest()
         {
-            var res =  ITC.GetNews();
+            var news =  Task.Factory.StartNew(ITC.GetNews).Result;
+
+            Assert.IsNotNull(news);
+        }
+
+        [TestMethod]
+        public void CacheTest()
+        {
+            string itc = "http://itc.ua/";
+            DataCache.Cache(itc,DataGrabber.GrabHtml(itc));
+
+            var cachedData = DataCache.GetCachedData(itc);
+
+            Assert.IsNotNull(cachedData);
         }
     }
 }

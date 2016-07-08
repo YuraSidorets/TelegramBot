@@ -94,6 +94,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Net.Http" />
+    <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -176,7 +177,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utils\DataGrabber.cs" />
+    <Compile Include="Utils\Utils.cs" />
     <Compile Include="Utils\ITC.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -209,7 +210,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>50742</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
