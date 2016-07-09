@@ -1,7 +1,4 @@
-﻿using System.Collections.Specialized;
-using System.Configuration;
-
-namespace TelegramBot.BotLogic
+﻿namespace TelegramBot.BotLogic
 {
     public static class Config
     {

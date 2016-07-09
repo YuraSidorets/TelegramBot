@@ -1,10 +1,8 @@
-﻿using System.Threading.Tasks;
-using Telegram.Bot;
-using Telegram.Bot.Args;
+﻿using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
-using TelegramBot.Utils;
+using TelegramBot.DataHelpers;
 
 namespace TelegramBot.BotLogic
 {
@@ -38,6 +36,15 @@ namespace TelegramBot.BotLogic
 
                 await _bot.SendTextMessageAsync(message.Chat.Id, ITC.GetNews(),
                     replyMarkup: new ForceReply(),disableWebPagePreview:true);
+
+            }
+            else if (message.Text.StartsWith("/Habr"))
+            {
+
+                await _bot.SendChatActionAsync(message.Chat.Id, ChatAction.Typing);
+
+                await _bot.SendTextMessageAsync(message.Chat.Id, Habr.GetNews(),
+                    replyMarkup: new ForceReply(), disableWebPagePreview: true);
 
             }
             else if (message.Text.StartsWith("/help"))

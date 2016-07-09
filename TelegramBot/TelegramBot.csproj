@@ -173,12 +173,14 @@
     <Compile Include="BotLogic\Config.cs" />
     <Compile Include="BotLogic\Handler.cs" />
     <Compile Include="Controllers\WebHookController.cs" />
+    <Compile Include="DataHelpers\Habr.cs" />
+    <Compile Include="DataHelpers\Recode.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\Utils.cs" />
-    <Compile Include="Utils\ITC.cs" />
+    <Compile Include="DataHelpers\ITC.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

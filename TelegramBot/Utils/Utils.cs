@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Net;
 using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 using System.Web.Caching;
-using System.Web.UI;
 using HtmlAgilityPack;
 
 namespace TelegramBot.Utils
@@ -24,9 +22,9 @@ namespace TelegramBot.Utils
                 wc.Encoding = Encoding.UTF8;
                 htmlDoc.LoadHtml(wc.DownloadString(url));
             }
-            
+
             //Cache data when grab it 
-            DataCache.Cache(url,htmlDoc);
+            DataCache.Cache(url, htmlDoc);
 
             return htmlDoc;
         }
@@ -39,7 +37,7 @@ namespace TelegramBot.Utils
     {
         protected override WebRequest GetWebRequest(Uri adress)
         {
-            HttpWebRequest request = (HttpWebRequest) base.GetWebRequest(adress);
+            HttpWebRequest request = (HttpWebRequest)base.GetWebRequest(adress);
             if (request != null)
             {
                 request.AutomaticDecompression = DecompressionMethods.GZip |
@@ -56,11 +54,11 @@ namespace TelegramBot.Utils
     public static class DataCache
     {
         private static Cache _cache = HttpRuntime.Cache;
-        
+
 
         public static void Cache(string url, HtmlDocument document)
         {
-            _cache.Add(url,document, null, System.Web.Caching.Cache.NoAbsoluteExpiration,TimeSpan.FromHours(1.0),CacheItemPriority.Default, OnRemoveCallback);
+            _cache.Add(url, document, null, System.Web.Caching.Cache.NoAbsoluteExpiration, TimeSpan.FromMinutes(10), CacheItemPriority.Default, OnRemoveCallback);
         }
 
         private static void OnRemoveCallback(string key, object value, CacheItemRemovedReason reason)
@@ -80,14 +78,14 @@ namespace TelegramBot.Utils
             document = _cache[key] as HtmlDocument;
             if (document == null)
             {
-                Cache(key,DataGrabber.GrabHtml(key));
+                Cache(key, DataGrabber.GrabHtml(key));
                 document = _cache[key] as HtmlDocument;
             }
             return document;
         }
     }
 
-  
+
 
 
 }

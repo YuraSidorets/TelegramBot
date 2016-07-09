@@ -2,6 +2,7 @@
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using TelegramBot.DataHelpers;
 using TelegramBot.Utils;
 
 namespace TelegramBot.Test
@@ -12,7 +13,7 @@ namespace TelegramBot.Test
         [TestMethod]
         public void ITCTest()
         {
-            var news =  Task.Factory.StartNew(ITC.GetNews).Result;
+            var news =  Task.Factory.StartNew(Recode.GetNews).Result;
 
             Assert.IsNotNull(news);
         }

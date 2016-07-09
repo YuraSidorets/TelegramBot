@@ -1,9 +1,4 @@
-﻿using System;
-using System.IO;
-using System.IO.Pipes;
-using System.Linq;
-using Telegram.Bot;
-using Telegram.Bot.Types;
+﻿using Telegram.Bot;
 
 namespace TelegramBot.BotLogic
 {
