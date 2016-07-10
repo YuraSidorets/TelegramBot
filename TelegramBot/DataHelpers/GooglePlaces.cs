@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
+﻿using System.Globalization;
 using System.Text;
-using System.Web;
 using Google.Maps;
-using Google.Maps.Geocoding;
 using Google.Maps.Places;
 using Google.Maps.StaticMaps;
 
@@ -13,7 +8,7 @@ namespace TelegramBot.DataHelpers
 {
     public class GooglePlaces
     {
-        private  static void AssignApiKey()
+        private static void AssignApiKey()
         {
             GoogleSigned.AssignAllServices(new GoogleSigned("AIzaSyB6Mpkjz3RflA7_-JA9wWDfiTZmIwSu2-c"));
         }
@@ -28,18 +23,18 @@ namespace TelegramBot.DataHelpers
             placesRequest.Sensor = true;
             placesRequest.RankBy = RankBy.Distance;
             placesRequest.OpenNow = true;
-           
+
             var placesResponse = new PlacesService().GetResponse(placesRequest);
-            
+
             StringBuilder places = new StringBuilder();
             foreach (var place in placesResponse.Results)
             {
                 var placepos = place.Geometry.Location.Latitude.ToString(CultureInfo.CurrentCulture).Replace(".", "d") + "k" +
                                place.Geometry.Location.Longitude.ToString(CultureInfo.CurrentCulture).Replace(".", "d");
-               places.Append("Name:  "+place.Name+"\n");
-               places.Append("Rating: " + place.Rating + "\n");
-               places.Append("Place Location: /Map" + placepos + " \n");
-               places.Append("-------------------------------\n");
+                places.Append("Name:  " + place.Name + "\n");
+                places.Append("Rating: " + place.Rating + "\n");
+                places.Append("Place Location: /Map" + placepos + " \n");
+                places.Append("-------------------------------\n");
             }
 
             return places.ToString();
