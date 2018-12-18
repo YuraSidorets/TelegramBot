@@ -1,37 +1,39 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+
 using HtmlAgilityPack;
+
 using TelegramBot.Utils;
 
-namespace TelegramBot.DataHelpers
+namespace TelegramBot.Services
 {
-    public class NewsFormer
+    public class NewsFormer : INewsService
     {
         /// <summary>
         /// Get Daily news from ITC
         /// </summary>
         /// <returns></returns>
-        public static string ITC()
+        public string ITC()
         {
-            return GetNews("http://itc.ua/", "//a[@rel = 'bookmark']");
+            return this.GetNews("http://itc.ua/", "//a[@rel = 'bookmark']");
         }
 
         /// <summary>
         /// Get Daily news from Habr
         /// </summary>
         /// <returns></returns>
-        public static string Habr()
+        public string Habr()
         {
-            return GetNews("https://habrahabr.ru/top/", "//a[@class='post__title_link']");
+            return this.GetNews("https://habrahabr.ru/top/", "//a[@class='post__title_link']");
         }
 
         /// <summary>
         /// Get Daily news from Recode
         /// </summary>
         /// <returns></returns>
-        public static string Recode()
+        public string Recode()
         {
-            return GetNews("http://www.recode.net/", "//a[@data-analytics-link='article']");
+            return this.GetNews("https://www.recode.net/", "//a[@data-chorus-optimize-field=\"hed\"]");
         }
 
         /// <summary>
@@ -40,7 +42,7 @@ namespace TelegramBot.DataHelpers
         /// <param name="url">web page url</param>
         /// <param name="pattern">XPath string to recognize articles headers</param>
         /// <returns></returns>
-        private static string GetNews(string url, string pattern)
+        private string GetNews(string url, string pattern)
         {
             StringBuilder builder = new StringBuilder();
             List<string> headers = new List<string>();
@@ -49,15 +51,19 @@ namespace TelegramBot.DataHelpers
 
             if (data != null)
             {
-                headers = ParseHtml(data,pattern);
+                headers = this.ParseHtml(data,pattern);
             }
 
             if (headers.Count != 0)
             {
-                foreach (var header in headers)
+                for (var i = 0; i < 5; i++)
                 {
-                    builder.AppendFormat($"{header}\n\n");
+                    builder.AppendFormat($"{headers[i]}\n\n");
                 }
+                //foreach (var header in headers)
+                //{
+                //    builder.AppendFormat($"{header}\n\n");
+                //}
             }
             else
             {
@@ -68,7 +74,7 @@ namespace TelegramBot.DataHelpers
         }
 
 
-        private static List<string> ParseHtml(HtmlDocument document, string pattern)
+        private List<string> ParseHtml(HtmlDocument document, string pattern)
         {
             List<string> contentStrings = new List<string>();
 

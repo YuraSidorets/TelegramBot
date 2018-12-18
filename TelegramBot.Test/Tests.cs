@@ -1,8 +1,7 @@
-﻿using System;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using TelegramBot.DataHelpers;
+
+using TelegramBot.Services;
 using TelegramBot.Utils;
 
 namespace TelegramBot.Test
@@ -10,10 +9,17 @@ namespace TelegramBot.Test
     [TestClass]
     public class Tests
     {
+        private INewsService newsService;
+
+        private IPhotoService photoService;
+
+        private IPlacesService herePlaces;
+
         [TestMethod]
         public void GetNewsTest()
         {
-            var news =  Task.Factory.StartNew(NewsFormer.ITC).Result;
+            newsService = new NewsFormer();
+            var news =  Task.Factory.StartNew(newsService.Recode).Result;
 
             Assert.IsNotNull(news);
         }
@@ -21,7 +27,8 @@ namespace TelegramBot.Test
         [TestMethod]
         public void GetPhotoTest()
         {
-            var news = Task.Factory.StartNew(Flickr.GetPhoto).Result;
+            photoService = new Flickr();
+            var news = Task.Factory.StartNew(photoService.GetPhoto).Result;
 
             Assert.IsNotNull(news);
         }
@@ -37,10 +44,13 @@ namespace TelegramBot.Test
             Assert.IsNotNull(cachedData);
         }
 
+
+
         [TestMethod]
         public void MapsTest()
         {
-            var data = GooglePlaces.FindPlace(50.496781, 30.761194);
+            herePlaces = new HerePlaces();
+            var data = herePlaces.FindPlace(50.496781, 30.761194);
 
             Assert.IsNotNull(data);
         }
@@ -48,7 +58,8 @@ namespace TelegramBot.Test
         [TestMethod]
         public void GetMapTest()
         {
-            var data = GooglePlaces.GetMap("50.4517896,30.4686003");
+            herePlaces = new HerePlaces();
+            var data = herePlaces.GetMap("50.4517896,30.4686003");
 
             Assert.IsNotNull(data);
         }

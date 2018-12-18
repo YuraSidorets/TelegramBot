@@ -3,117 +3,143 @@ using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
-using TelegramBot.DataHelpers;
+
+using TelegramBot.Services;
 
 namespace TelegramBot.BotLogic
 {
     public class Handler
     {
-        private readonly TelegramBotClient _bot;
+        private readonly TelegramBotClient bot;
+
+        private readonly IPlacesService herePlaces;
+
+        private readonly INewsService newsService;
+
+        private readonly IPhotoService photoService;
 
         public Handler()
         {
-            _bot = Bot.Get();
+            bot = Bot.Get();
+            herePlaces = new HerePlaces();
+            newsService = new NewsFormer();
+            photoService = new Flickr();
         }
 
         public async void Handle(Message message)
         {
-            if (message == null) return;
+            if (message == null)
+            {
+                return;
+            }
 
-            if (message.Type == MessageType.LocationMessage)
+            if (message.Type == MessageType.Location)
             {
 
-                await _bot.SendChatActionAsync(message.Chat.Id, ChatAction.Typing);
-                    await _bot.SendTextMessageAsync(message.Chat.Id, GooglePlaces.FindPlace(message.Location.Latitude, message.Location.Longitude),
-                    replyMarkup: new ForceReply());
+                await bot.SendChatActionAsync(message.Chat.Id, ChatAction.Typing);
+                await bot.SendTextMessageAsync(message.Chat.Id, herePlaces.FindPlace(message.Location.Latitude, message.Location.Longitude),
+                replyMarkup: new ForceReplyMarkup());
             }
 
             if (message.Text.StartsWith("/start"))
             {
-                await _bot.SendChatActionAsync(message.Chat.Id, ChatAction.Typing);
-               
+                await bot.SendChatActionAsync(message.Chat.Id, ChatAction.Typing);
+
                 await
-                    _bot.SendTextMessageAsync(message.Chat.Id,
-                        "Hello, I'm Stoned Jesus Bot! :3 What you wanna from me?! See /help",
-                        replyMarkup: new ForceReply());
+                    bot.SendTextMessageAsync(message.Chat.Id,
+                        "Hello, I'm Stoned Jesus Bot! What do you wanna from me?! See /help",
+                        replyMarkup: new ReplyKeyboardRemove());
             }
             else if (message.Text.StartsWith("/ITC"))
             {
 
-                await _bot.SendChatActionAsync(message.Chat.Id, ChatAction.Typing);
+                await bot.SendChatActionAsync(message.Chat.Id, ChatAction.Typing);
 
-                await _bot.SendTextMessageAsync(message.Chat.Id,NewsFormer.ITC(),
-                    replyMarkup: new ForceReply(),disableWebPagePreview:true);
+                await bot.SendTextMessageAsync(message.Chat.Id, newsService.ITC(),
+                    replyMarkup: new ReplyKeyboardRemove(), disableWebPagePreview: true);
 
             }
             else if (message.Text.StartsWith("/Habr"))
             {
 
-                await _bot.SendChatActionAsync(message.Chat.Id, ChatAction.Typing);
+                await bot.SendChatActionAsync(message.Chat.Id, ChatAction.Typing);
 
-                await _bot.SendTextMessageAsync(message.Chat.Id, NewsFormer.Habr(),
-                    replyMarkup: new ForceReply(), disableWebPagePreview: true);
+                await bot.SendTextMessageAsync(message.Chat.Id, newsService.Habr(),
+                    replyMarkup: new ReplyKeyboardRemove(), disableWebPagePreview: true);
 
             }
             else if (message.Text.StartsWith("/Recode"))
             {
 
-                await _bot.SendChatActionAsync(message.Chat.Id, ChatAction.Typing);
-
-                await _bot.SendTextMessageAsync(message.Chat.Id, NewsFormer.Recode(),
-                    replyMarkup: new ForceReply(), disableWebPagePreview: true);
+                await bot.SendChatActionAsync(message.Chat.Id, ChatAction.Typing);
+                var news = newsService.Recode();
+                await bot.SendTextMessageAsync(message.Chat.Id, news,
+                    replyMarkup: new ReplyKeyboardRemove(), disableWebPagePreview: true);
 
             }
             else if (message.Text.StartsWith("/Flickr"))
             {
 
-                await _bot.SendChatActionAsync(message.Chat.Id, ChatAction.Typing);
+                await bot.SendChatActionAsync(message.Chat.Id, ChatAction.Typing);
 
-                await _bot.SendTextMessageAsync(message.Chat.Id, Flickr.GetPhoto(),
-                    replyMarkup: new ForceReply());
+                await bot.SendTextMessageAsync(message.Chat.Id, photoService.GetPhoto(),
+                    replyMarkup: new ReplyKeyboardRemove());
 
             }
             else if (message.Text.StartsWith("/Lounge"))
             {
 
-                await _bot.SendChatActionAsync(message.Chat.Id, ChatAction.Typing);
+                await bot.SendChatActionAsync(message.Chat.Id, ChatAction.Typing);
 
-                await _bot.SendTextMessageAsync(message.Chat.Id, "Send your location",
-                    replyMarkup: new ForceReply());
+                await bot.SendTextMessageAsync(message.Chat.Id, "Send your location",
+                    replyMarkup: new ReplyKeyboardRemove());
 
             }
             else if (message.Text.StartsWith("/Map"))
             {
 
-                await _bot.SendChatActionAsync(message.Chat.Id, ChatAction.Typing);
+                await bot.SendChatActionAsync(message.Chat.Id, ChatAction.Typing);
 
-                await _bot.SendTextMessageAsync(message.Chat.Id, GooglePlaces.GetMap(message.Text.Substring(message.Text.IndexOf("p",StringComparison.CurrentCulture)+1).Replace("d",".").Replace("k", ",")),
-                    replyMarkup: new ForceReply());
+                await bot.SendTextMessageAsync(message.Chat.Id, herePlaces.GetMap(message.Text.Substring(message.Text.IndexOf("p", StringComparison.InvariantCulture) + 1).Replace("d", ".").Replace("k", ",")),
+                    replyMarkup: new ReplyKeyboardRemove());
 
             }
             else if (message.Text.StartsWith("/help"))
             {
-                await _bot.SendChatActionAsync(message.Chat.Id, ChatAction.Typing);
+                await bot.SendChatActionAsync(message.Chat.Id, ChatAction.Typing);
 
                 await
-                    _bot.SendTextMessageAsync(message.Chat.Id,
+                    bot.SendTextMessageAsync(message.Chat.Id,
                         @"Usage:
 /ITC - Latest news from ITC UA
-/Habr - Latest news from Habrahabr ^^
+/Habr - Latest news from Habrahabr
 /Recode - Latest news from Recode
 /Flickr - Random photo from Flickr Explore
 /Lounge - Nearest places to lounge
 ",
-                        replyMarkup: new ForceReply());
+                        replyMarkup: new ReplyKeyboardRemove());
             }
+            //else if (message.Text.StartsWith("/send "))
+            //{
+            //    await _bot.SendChatActionAsync(message.Chat.Id, ChatAction.Typing);
+            //    using (var client = new HttpClient())
+            //    {
+            //        client.BaseAddress = new Uri("");
+            //        var content = new FormUrlEncodedContent(new[]
+            //        {
+            //    new KeyValuePair<string, string>("message", message.From.FirstName + ": " + message.Text.Substring(message.Text.IndexOf(" ")) )
+            //});
+            //        var result = await client.PostAsync("/Home/SendMessage", content);
+            //    }
+            //}
             else
             {
-                await _bot.SendChatActionAsync(message.Chat.Id, ChatAction.Typing);
+                await bot.SendChatActionAsync(message.Chat.Id, ChatAction.Typing);
 
                 await
-                    _bot.SendTextMessageAsync(message.Chat.Id,
-                        "Command don't recognized, see /help",
-                        replyMarkup: new ForceReply());
+                    bot.SendTextMessageAsync(message.Chat.Id,
+                        "Command doesn't recognized, see /help",
+                        replyMarkup: new ReplyKeyboardRemove());
             }
         }
 
