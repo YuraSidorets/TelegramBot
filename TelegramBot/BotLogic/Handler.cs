@@ -113,7 +113,7 @@ This bot is made on free time without any profit.
 If you are liking this bot so far you should consider sending a donation.
 Card details: __4567 8901 2345 6789__
 For any questions you can raise an issue on [Github page](https://github.com/YuraSidorets/TelegramBot)
-", replyMarkup: new ReplyKeyboardRemove());
+", parseMode: ParseMode.Markdown, replyMarkup: new ReplyKeyboardRemove());
 
             }
             else if (message.Text.StartsWith("/help"))
@@ -128,6 +128,7 @@ For any questions you can raise an issue on [Github page](https://github.com/Yur
 /Recode - Latest news from Recode
 /Flickr - Random photo from Flickr Explore
 /Lounge - Nearest places to lounge
+/support - Ways to contribute to project
 ",
                         replyMarkup: new ReplyKeyboardRemove());
             }
