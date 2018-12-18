@@ -104,6 +104,18 @@ namespace TelegramBot.BotLogic
                     replyMarkup: new ReplyKeyboardRemove());
 
             }
+            else if (message.Text.StartsWith("/support"))
+            {
+                await bot.SendChatActionAsync(message.Chat.Id, ChatAction.Typing);
+
+                await bot.SendTextMessageAsync(message.Chat.Id, @"Dear user!
+This bot is made on free time without any profit.
+If you are liking this bot so far you should consider sending a donation.
+Card details: __4567 8901 2345 6789__
+For any questions you can raise an issue on [Github page](https://github.com/YuraSidorets/TelegramBot)
+", replyMarkup: new ReplyKeyboardRemove());
+
+            }
             else if (message.Text.StartsWith("/help"))
             {
                 await bot.SendChatActionAsync(message.Chat.Id, ChatAction.Typing);
